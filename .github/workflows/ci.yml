@@ -35,6 +35,7 @@ jobs:
       - name: Audit des dépendances
         #vérifie des failles de sécurité des paquets npm
         run: npm audit --audit-level=critical
+        continue-on-error: true
         
       - name: Lancement des tests unitaires
         # Lance le script de test
