@@ -1,20 +1,17 @@
-module.exports = {
-  env: {
-    browser: true,
-    es2021: true,
-    node: true,
+{
+  // utilise le guide de style imposé par le sujet
+  "extends": ["google"],
+  // autorise les fonctions du navigateur et de node
+  "env": {
+    "browser": true,
+    "node": true,
+    "es2021": true
   },
-  extends: ['eslint:recommended', 'plugin:prettier/recommended'],
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
+  // définit la lecture du code en version moderne
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
   },
-  plugins: ['simple-import-sort'],
-  rules: {
-    'arrow-body-style': ['error', 'as-needed'],
-    'func-style': 'error',
-    'no-restricted-syntax': ['error', 'VariableDeclaration[kind!="var"]'],
-    'object-shorthand': 'error',
-    'simple-import-sort/imports': 'error',
-  },
-};
+  // règles personnalisées
+  "rules": {}
+}
