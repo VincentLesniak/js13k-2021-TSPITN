@@ -40,3 +40,7 @@ jobs:
       - name: Lancement des tests unitaires
         # Lance le script de test
         run: npm run test
+
+      - name: Linter
+        # exécute le script "lint" défini dans le package.json
+        run: npm run lint
