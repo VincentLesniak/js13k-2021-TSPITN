@@ -1,5 +1,5 @@
 // importe la fonction depuis le fichier math.js
-const { randFloatSpread } = require('./src/math.js');
+import { randFloatSpread } from './src/math.js';
 
 // exécute la fonction avec le paramètre 1 et stocke le résultat
 const resultat = randFloatSpread(1);
