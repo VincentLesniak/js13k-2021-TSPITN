@@ -13,5 +13,10 @@
     "sourceType": "module"
   },
   // règles personnalisées
-  "rules": {}
+  "rules": {
+    // tolère l'utilisation de l'ancien mot-clé var
+    "no-var": "off",
+    // accepte les noms qui ne respectent pas le format camelcase
+    "camelcase": "off"
+  }
 }
