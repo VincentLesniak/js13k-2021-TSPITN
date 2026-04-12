@@ -1,0 +1,41 @@
+name: Pipeline CI
+
+on:
+
+  workflow_dispatch:
+
+  push:
+
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  ci-test:
+    #version fix pour stabiliser l'environnement d'exécution et éviter les changements inattendus
+    runs-on: ubuntu-22.04
+    
+    permissions:
+      contents: read
+      
+    steps:
+      - name: Récupération du code
+        #SHA exact du commit de l'action pour empêcher toute modification silencieuse
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+
+      - name: Configuration de Node.js
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444
+        with:
+          node-version: '18'
+          
+      - name: Installation des dépendances
+        # installe les paquets du package.json
+        run: npm install
+        
+      - name: Audit des dépendances
+        #vérifie des failles de sécurité des paquets npm
+        run: npm audit
+        
+      - name: Lancement des tests unitaires
+        # Lance le script de test
+        run: npm run test
