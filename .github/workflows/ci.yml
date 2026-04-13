@@ -1,46 +1,76 @@
-name: Pipeline CI
+name: Pipeline CI Two Ship
 
 on:
-
   workflow_dispatch:
-
   push:
-
   pull_request:
     branches:
       - main
 
+permissions:
+  contents: read
+
 jobs:
-  ci-test:
-    #version fix pour stabiliser l'environnement d'exécution et éviter les changements inattendus
+
+  job-build:
     runs-on: ubuntu-22.04
-    
-    permissions:
-      contents: read
-      
     steps:
       - name: Récupération du code
-        #SHA exact du commit de l'action pour empêcher toute modification silencieuse
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
-
       - name: Configuration de Node.js
         uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f
         with:
           node-version: '20'
-          
+          cache: 'npm' # Active la mise en cache ici
       - name: Installation des dépendances
-        # installe les paquets du package.json
         run: npm install
-        
+
+  job-audit:
+    needs: job-build
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Récupération du code
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+      - name: Configuration de Node.js
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f
+        with:
+          node-version: '20'
+          cache: 'npm' # Récupère le cache créé par job-build
+      - name: Installation des dépendances
+        # Cette étape sera quasi-instantanée grâce au cache
+        run: npm install
       - name: Audit des dépendances
-        #vérifie des failles de sécurité des paquets npm
         run: npm audit --audit-level=critical
         continue-on-error: true
-        
-      - name: Lancement des tests unitaires
-        # Lance le script de test
-        run: npm run test
 
+  job-lint:
+    needs: job-build
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Récupération du code
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+      - name: Configuration de Node.js
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - name: Installation des dépendances
+        run: npm install
       - name: Linter
-        # exécute le script "lint" défini dans le package.json
         run: npm run lint
+
+  job-test:
+    needs: job-build
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Récupération du code
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+      - name: Configuration de Node.js
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - name: Installation des dépendances
+        run: npm install
+      - name: Lancement des tests unitaires
+        run: npm run test
