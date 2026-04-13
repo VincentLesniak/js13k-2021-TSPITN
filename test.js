@@ -11,10 +11,3 @@ if (resultat <= 1) {
   console.error('Test Failed');
   process.exit(1);
 }
-
-
-
-
-
-
-// randFloatSpread(1) >= -1 returns true
