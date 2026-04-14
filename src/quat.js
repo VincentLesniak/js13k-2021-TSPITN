@@ -1,6 +1,6 @@
-import { clamp } from './math.js';
+import {clamp} from './math.js';
 
-export var quat_create = (x = 0, y = 0, z = 0, w = 1) => ({ x, y, z, w });
+export var quat_create = (x = 0, y = 0, z = 0, w = 1) => ({x, y, z, w});
 
 export var quat_set = (q, x, y, z, w) => {
   q.x = x;
@@ -19,7 +19,7 @@ export var quat_copy = (a, b) => {
 };
 
 export var quat_setFromEuler = (q, euler) => {
-  var { x, y, z } = euler;
+  var {x, y, z} = euler;
 
   // http://www.mathworks.com/matlabcentral/fileexchange/
   //   20696-function-to-convert-between-dcm-euler-angles-quaternions-and-euler-vectors/
@@ -60,15 +60,15 @@ export var quat_setFromRotationMatrix = (q, m) => {
   // http://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/index.htm
   // assumes the upper 3x3 of m is a pure rotation matrix (i.e, unscaled)
 
-  var m11 = m[0],
-    m12 = m[4],
-    m13 = m[8];
-  var m21 = m[1],
-    m22 = m[5],
-    m23 = m[9];
-  var m31 = m[2],
-    m32 = m[6],
-    m33 = m[10];
+  var m11 = m[0];
+  var m12 = m[4];
+  var m13 = m[8];
+  var m21 = m[1];
+  var m22 = m[5];
+  var m23 = m[9];
+  var m31 = m[2];
+  var m32 = m[6];
+  var m33 = m[10];
 
   var trace = m11 + m22 + m33;
   var s;
@@ -123,10 +123,10 @@ export var quat_rotateTowards = (a, b, step) => {
 
 export var quat_dot = (a, b) => a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
 
-export var quat_length = q =>
+export var quat_length = (q) =>
   Math.sqrt(q.x * q.x + q.y * q.y + q.z * q.z + q.w * q.w);
 
-export var quat_normalize = q => {
+export var quat_normalize = (q) => {
   var l = quat_length(q);
 
   if (!l) {
@@ -148,14 +148,14 @@ export var quat_normalize = q => {
 
 export var quat_multiply = (a, b) => {
   // from http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/code/index.htm
-  var qax = a.x,
-    qay = a.y,
-    qaz = a.z,
-    qaw = a.w;
-  var qbx = b.x,
-    qby = b.y,
-    qbz = b.z,
-    qbw = b.w;
+  var qax = a.x;
+  var qay = a.y;
+  var qaz = a.z;
+  var qaw = a.w;
+  var qbx = b.x;
+  var qby = b.y;
+  var qbz = b.z;
+  var qbw = b.w;
 
   a.x = qax * qbw + qaw * qbx + qay * qbz - qaz * qby;
   a.y = qay * qbw + qaw * qby + qaz * qbx - qax * qbz;
@@ -169,7 +169,7 @@ export var quat_slerp = (a, b, t) => {
   if (t === 0) return a;
   if (t === 1) return quat_copy(a, b);
 
-  var { x, y, z, w } = a;
+  var {x, y, z, w} = a;
 
   // http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/slerp/
 
@@ -209,8 +209,8 @@ export var quat_slerp = (a, b, t) => {
 
   var sinHalfTheta = Math.sqrt(sqrSinHalfTheta);
   var halfTheta = Math.atan2(sinHalfTheta, cosHalfTheta);
-  var ratioA = Math.sin((1 - t) * halfTheta) / sinHalfTheta,
-    ratioB = Math.sin(t * halfTheta) / sinHalfTheta;
+  var ratioA = Math.sin((1 - t) * halfTheta) / sinHalfTheta;
+  var ratioB = Math.sin(t * halfTheta) / sinHalfTheta;
 
   a.w = w * ratioA + a.w * ratioB;
   a.x = x * ratioA + a.x * ratioB;

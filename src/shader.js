@@ -42,7 +42,7 @@ export var getAttributeLocations = (gl, program) => {
 
   for (var i = 0; i < count; i++) {
     var attribute = gl.getActiveAttrib(program, i);
-    var { name } = attribute;
+    var {name} = attribute;
     locations[name] = gl.getAttribLocation(program, name);
   }
 
@@ -56,7 +56,7 @@ export var getUniformLocations = (gl, program) => {
 
   for (var i = 0; i < count; i++) {
     var uniform = gl.getActiveUniform(program, i);
-    var { name } = uniform;
+    var {name} = uniform;
     locations[name] = gl.getUniformLocation(program, name);
   }
 

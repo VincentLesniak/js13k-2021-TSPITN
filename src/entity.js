@@ -24,10 +24,10 @@ export var entity_remove = (entity, component) => {
 
   if (index >= 0) {
     entity.components
-      .splice(index, 1)
-      .map(component => (component.parent = undefined));
+        .splice(index, 1)
+        .map((component) => (component.parent = undefined));
   }
 };
 
 export var entity_update = (entity, ...args) =>
-  entity.components.map(component => component.update(...args));
+  entity.components.map((component) => component.update(...args));

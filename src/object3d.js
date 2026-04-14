@@ -42,8 +42,8 @@ export var object3d_create = () => ({
 
 export var object3d_lookAt = (object, vector) => {
   quat_setFromRotationMatrix(
-    object.quaternion,
-    mat4_lookAt(_m1, vector, object.position, vec3_Y),
+      object.quaternion,
+      mat4_lookAt(_m1, vector, object.position, vec3_Y),
   );
 };
 
@@ -80,11 +80,11 @@ export var object3d_translateOnAxis = (obj, axis, distance) => {
   // translate object by distance along axis in object space
   // axis is assumed to be normalized
   vec3_add(
-    obj.position,
-    vec3_multiplyScalar(
-      vec3_applyQuaternion(Object.assign(_v1, axis), obj.quaternion),
-      distance,
-    ),
+      obj.position,
+      vec3_multiplyScalar(
+          vec3_applyQuaternion(Object.assign(_v1, axis), obj.quaternion),
+          distance,
+      ),
   );
   return obj;
 };
@@ -100,14 +100,14 @@ export var object3d_translateZ = (obj, distance) =>
 
 export var object3d_traverse = (obj, callback) => {
   callback(obj);
-  obj.children.map(child => object3d_traverse(child, callback));
+  obj.children.map((child) => object3d_traverse(child, callback));
 };
 
-export var object3d_updateMatrix = obj => {
+export var object3d_updateMatrix = (obj) => {
   mat4_compose(obj.matrix, obj.position, obj.quaternion, obj.scale);
 };
 
-export var object3d_updateWorldMatrix = obj => {
+export var object3d_updateWorldMatrix = (obj) => {
   object3d_updateMatrix(obj);
 
   if (!obj.parent) {

@@ -1,4 +1,4 @@
-import { mat4_create, mat4_invert } from './mat4.js';
+import {mat4_create, mat4_invert} from './mat4.js';
 import {
   vec3_add,
   vec3_applyMatrix4,
@@ -25,8 +25,8 @@ var _inverseMatrix = mat4_create();
 var _intersectionPoint = vec3_create();
 
 export var ray_create = (
-  origin = vec3_create(),
-  direction = vec3_create(),
+    origin = vec3_create(),
+    direction = vec3_create(),
 ) => ({
   origin,
   direction,
@@ -40,12 +40,12 @@ export var ray_copy = (a, b) => {
 
 export var ray_at = (ray, t, target = vec3_create()) =>
   vec3_add(
-    vec3_multiplyScalar(Object.assign(target, ray.direction), t),
-    ray.origin,
+      vec3_multiplyScalar(Object.assign(target, ray.direction), t),
+      ray.origin,
   );
 
 export var ray_intersectBox = (ray, box, target) => {
-  var { origin, direction } = ray;
+  var {origin, direction} = ray;
 
   var txmin = (box.min.x - origin.x) / direction.x;
   var txmax = (box.max.x - origin.x) / direction.x;
@@ -91,9 +91,9 @@ export var ray_intersectTriangle = (ray, a, b, c, target) => {
   // Compute the offset origin, edges, and normal.
   // from http://www.geometrictools.com/GTEngine/Include/Mathematics/GteIntrRay3Triangle3.h
   vec3_crossVectors(
-    _normal,
-    vec3_subVectors(_edge1, b, a),
-    vec3_subVectors(_edge2, c, a),
+      _normal,
+      vec3_subVectors(_edge1, b, a),
+      vec3_subVectors(_edge2, c, a),
   );
 
   // Solve Q + t*D = b1*E1 + b2*E2 (Q = kDiff, D = ray direction,
@@ -163,7 +163,7 @@ export var ray_intersectMesh = (ray, object) => {
   _inverseMatrix.set(object.matrixWorld);
   ray_applyMatrix4(ray_copy(_ray, ray), mat4_invert(_inverseMatrix));
 
-  var { vertices, faces } = object.geometry;
+  var {vertices, faces} = object.geometry;
 
   faces.map((face, faceIndex) => {
     var a = vertices[face.a];
@@ -193,5 +193,5 @@ export var ray_applyMatrix4 = (r, m) => {
 
 export var ray_intersectObjects = (ray, objects) =>
   objects
-    .flatMap(object => ray_intersectMesh(ray, object))
-    .sort((a, b) => a.distance - b.distance);
+      .flatMap((object) => ray_intersectMesh(ray, object))
+      .sort((a, b) => a.distance - b.distance);

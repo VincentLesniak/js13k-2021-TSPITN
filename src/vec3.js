@@ -1,4 +1,4 @@
-export var vec3_create = (x = 0, y = 0, z = 0) => ({ x, y, z });
+export var vec3_create = (x = 0, y = 0, z = 0) => ({x, y, z});
 
 var _vector = vec3_create();
 
@@ -31,7 +31,7 @@ export var vec3_setZ = (v, z) => {
   return v;
 };
 
-export var vec3_clone = v => vec3_create(v.x, v.y, v.z);
+export var vec3_clone = (v) => vec3_create(v.x, v.y, v.z);
 
 export var vec3_add = (a, b) => {
   a.x += b.x;
@@ -83,7 +83,7 @@ export var vec3_multiplyScalar = (v, scalar) => {
 };
 
 export var vec3_applyMatrix4 = (v, m) => {
-  var { x, y, z } = v;
+  var {x, y, z} = v;
 
   var w = 1 / (m[3] * x + m[7] * y + m[11] * z + m[15]);
 
@@ -95,11 +95,11 @@ export var vec3_applyMatrix4 = (v, m) => {
 };
 
 export var vec3_applyQuaternion = (v, q) => {
-  var { x, y, z } = v;
-  var qx = q.x,
-    qy = q.y,
-    qz = q.z,
-    qw = q.w;
+  var {x, y, z} = v;
+  var qx = q.x;
+  var qy = q.y;
+  var qz = q.z;
+  var qw = q.w;
 
   // calculate quat * vector
 
@@ -121,7 +121,7 @@ export var vec3_transformDirection = (v, m) => {
   // input: THREE.Matrix4 affine matrix
   // vector interpreted as a direction
 
-  var { x, y, z } = v;
+  var {x, y, z} = v;
 
   v.x = m[0] * x + m[4] * y + m[8] * z;
   v.y = m[1] * x + m[5] * y + m[9] * z;
@@ -147,14 +147,14 @@ export var vec3_max = (a, b) => {
   return a;
 };
 
-export var vec3_round = v => {
+export var vec3_round = (v) => {
   v.x = Math.round(v.x);
   v.y = Math.round(v.y);
   v.z = Math.round(v.z);
   return v;
 };
 
-export var vec3_negate = v => {
+export var vec3_negate = (v) => {
   v.x = -v.x;
   v.y = -v.y;
   v.z = -v.z;
@@ -163,9 +163,9 @@ export var vec3_negate = v => {
 
 export var vec3_dot = (a, b) => a.x * b.x + a.y * b.y + a.z * b.z;
 
-export var vec3_length = v => Math.sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+export var vec3_length = (v) => Math.sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
 
-export var vec3_normalize = v => vec3_divideScalar(v, vec3_length(v) || 1);
+export var vec3_normalize = (v) => vec3_divideScalar(v, vec3_length(v) || 1);
 
 export var vec3_setLength = (v, length) =>
   vec3_multiplyScalar(vec3_normalize(v), length);
@@ -181,7 +181,7 @@ export var vec3_lerpVectors = (v, a, b, t) =>
   vec3_add(vec3_multiplyScalar(vec3_subVectors(v, b, a), t), a);
 
 export var vec3_cross = (a, b) => {
-  var { x, y, z } = a;
+  var {x, y, z} = a;
 
   a.x = y * b.z - z * b.y;
   a.y = z * b.x - x * b.z;
@@ -210,19 +210,19 @@ export var vec3_reflect = (v, normal) =>
   // reflect incident vector off plane orthogonal to normal
   // normal is assumed to have unit length
   vec3_sub(
-    v,
-    vec3_multiplyScalar(
-      Object.assign(_vector, normal),
-      2 * vec3_dot(v, normal),
-    ),
+      v,
+      vec3_multiplyScalar(
+          Object.assign(_vector, normal),
+          2 * vec3_dot(v, normal),
+      ),
   );
 
 export var vec3_distanceTo = (a, b) => Math.sqrt(vec3_distanceToSquared(a, b));
 
 export var vec3_distanceToSquared = (a, b) => {
-  var dx = a.x - b.x,
-    dy = a.y - b.y,
-    dz = a.z - b.z;
+  var dx = a.x - b.x;
+  var dy = a.y - b.y;
+  var dz = a.z - b.z;
   return dx * dx + dy * dy + dz * dz;
 };
 

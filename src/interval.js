@@ -1,4 +1,4 @@
-export var interval_create = duration => {
+export var interval_create = (duration) => {
   var previousTime = 0;
   var time = duration;
 

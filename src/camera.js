@@ -1,7 +1,7 @@
-import { mat4_create, mat4_invert, mat4_lookAt } from './mat4.js';
-import { object3d_create, object3d_updateWorldMatrix } from './object3d.js';
-import { quat_setFromRotationMatrix } from './quat.js';
-import { vec3_clone, vec3_Y } from './vec3.js';
+import {mat4_create, mat4_invert, mat4_lookAt} from './mat4.js';
+import {object3d_create, object3d_updateWorldMatrix} from './object3d.js';
+import {quat_setFromRotationMatrix} from './quat.js';
+import {vec3_clone, vec3_Y} from './vec3.js';
 
 var DEG_TO_RAD = Math.PI / 180;
 
@@ -26,13 +26,13 @@ export var camera_create = (fov = 60, aspect = 1, near = 0.1, far = 2000) => {
 
 export var camera_lookAt = (camera, vector) => {
   quat_setFromRotationMatrix(
-    camera.quaternion,
-    mat4_lookAt(_m1, camera.position, vector, camera.up),
+      camera.quaternion,
+      mat4_lookAt(_m1, camera.position, vector, camera.up),
   );
 };
 
-export var camera_updateProjectionMatrix = camera => {
-  var { near, far } = camera;
+export var camera_updateProjectionMatrix = (camera) => {
+  var {near, far} = camera;
 
   var top = near * Math.tan(DEG_TO_RAD * 0.5 * camera.fov);
   var bottom = -top;
@@ -56,7 +56,7 @@ export var camera_updateProjectionMatrix = camera => {
   ]);
 };
 
-export var camera_updateWorldMatrix = camera => {
+export var camera_updateWorldMatrix = (camera) => {
   object3d_updateWorldMatrix(camera);
   camera.matrixWorldInverse.set(camera.matrixWorld);
   mat4_invert(camera.matrixWorldInverse);

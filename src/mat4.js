@@ -141,7 +141,7 @@ export var mat4_setPosition = (m, v) => {
   return m;
 };
 
-export var mat4_invert = m => {
+export var mat4_invert = (m) => {
   // based on http://www.euclideanspace.com/maths/algebra/matrix/functions/inverse/fourD/index.htm
   var [
     n11,
@@ -310,7 +310,7 @@ export var mat4_invert = m => {
 };
 
 export var mat4_scale = (m, v) => {
-  var { x, y, z } = v;
+  var {x, y, z} = v;
 
   m[0] *= x;
   m[4] *= y;
@@ -332,23 +332,23 @@ export var mat4_scale = (m, v) => {
 };
 
 export var mat4_compose = (m, position, quaternion, scale) => {
-  var { x, y, z, w } = quaternion;
-  var x2 = x + x,
-    y2 = y + y,
-    z2 = z + z;
-  var xx = x * x2,
-    xy = x * y2,
-    xz = x * z2;
-  var yy = y * y2,
-    yz = y * z2,
-    zz = z * z2;
-  var wx = w * x2,
-    wy = w * y2,
-    wz = w * z2;
+  var {x, y, z, w} = quaternion;
+  var x2 = x + x;
+  var y2 = y + y;
+  var z2 = z + z;
+  var xx = x * x2;
+  var xy = x * y2;
+  var xz = x * z2;
+  var yy = y * y2;
+  var yz = y * z2;
+  var zz = z * z2;
+  var wx = w * x2;
+  var wy = w * y2;
+  var wz = w * z2;
 
-  var sx = scale.x,
-    sy = scale.y,
-    sz = scale.z;
+  var sx = scale.x;
+  var sy = scale.y;
+  var sz = scale.z;
 
   m.set([
     (1 - (yy + zz)) * sx,

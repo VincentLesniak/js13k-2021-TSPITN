@@ -1,4 +1,4 @@
-import { playJump } from './audio.js';
+import {playJump} from './audio.js';
 import {
   box3_copy,
   box3_create,
@@ -6,7 +6,7 @@ import {
   box3_translate,
   box3_union,
 } from './box3.js';
-import { BODY_BULLET, physics_bodies, sweptAABB } from './physics.js';
+import {BODY_BULLET, physics_bodies, sweptAABB} from './physics.js';
 import {
   OVERCLIP,
   pm_clipVelocity,
@@ -62,7 +62,7 @@ export var player_create = (object, body) => ({
   walking: false,
 });
 
-export var player_update = player => {
+export var player_update = (player) => {
   if (player.command.y < 10) {
     // not holding jump
     player.jump = false;
@@ -99,7 +99,7 @@ var trace_copy = (a, b) => {
 var trace_reset = (() => {
   var _trace = trace_create();
 
-  return trace => {
+  return (trace) => {
     trace_copy(trace, _trace);
     return trace;
   };
@@ -121,19 +121,19 @@ export var body_trace = (() => {
     Object.assign(bodyA.velocity, vec3_subVectors(velocity, end, start));
 
     box3_union(
-      box3_translate(box3_copy(sweptBoxA, bodyA.boundingBox), end),
-      box3_translate(box3_copy(boxA, bodyA.boundingBox), start),
+        box3_translate(box3_copy(sweptBoxA, bodyA.boundingBox), end),
+        box3_translate(box3_copy(boxA, bodyA.boundingBox), start),
     );
 
     for (var i = 0; i < bodies.length; i++) {
       var bodyB = bodies[i];
       if (
         !box3_overlapsBox(
-          sweptBoxA,
-          box3_translate(
-            box3_copy(boxB, bodyB.boundingBox),
-            bodyB.parent.position,
-          ),
+            sweptBoxA,
+            box3_translate(
+                box3_copy(boxB, bodyB.boundingBox),
+                bodyB.parent.position,
+            ),
         )
       ) {
         continue;
@@ -152,7 +152,7 @@ export var body_trace = (() => {
 
 var player_trace = (player, trace, start, end) => {
   var bodies = physics_bodies(player.scene).filter(
-    body => body !== player.body && body.physics !== BODY_BULLET,
+      (body) => body !== player.body && body.physics !== BODY_BULLET,
   );
   body_trace(bodies, player.body, trace, start, end);
 };
@@ -177,9 +177,9 @@ var player_slideMove = (() => {
       if (player.walking) {
         // slide along the ground plane
         pm_clipVelocity(
-          player.body.velocity,
-          player_groundTrace_normal,
-          OVERCLIP,
+            player.body.velocity,
+            player_groundTrace_normal,
+            OVERCLIP,
         );
       }
     }
@@ -203,9 +203,9 @@ var player_slideMove = (() => {
     for (bumpcount = 0; bumpcount < numbumps; bumpcount++) {
       // calculate position we are trying to move to
       vec3_addScaledVector(
-        Object.assign(end, player.object.position),
-        player.body.velocity,
-        time_left,
+          Object.assign(end, player.object.position),
+          player.body.velocity,
+          time_left,
       );
 
       // see if we can make it there
@@ -266,17 +266,17 @@ var player_slideMove = (() => {
 
         // slide along the plane
         pm_clipVelocity(
-          Object.assign(clipVelocity, player.body.velocity),
-          planes[i],
-          OVERCLIP,
+            Object.assign(clipVelocity, player.body.velocity),
+            planes[i],
+            OVERCLIP,
         );
 
         if (gravity) {
           // slide along the plane
           pm_clipVelocity(
-            Object.assign(endClipVelocity, endVelocity),
-            planes[i],
-            OVERCLIP,
+              Object.assign(endClipVelocity, endVelocity),
+              planes[i],
+              OVERCLIP,
           );
         }
 
@@ -305,17 +305,17 @@ var player_slideMove = (() => {
 
           // slide the original velocity along the crease
           vec3_multiplyScalar(
-            Object.assign(
-              clipVelocity,
-              vec3_normalize(vec3_crossVectors(dir, planes[i], planes[j])),
-            ),
-            vec3_dot(dir, player.body.velocity),
+              Object.assign(
+                  clipVelocity,
+                  vec3_normalize(vec3_crossVectors(dir, planes[i], planes[j])),
+              ),
+              vec3_dot(dir, player.body.velocity),
           );
 
           if (gravity) {
             vec3_multiplyScalar(
-              Object.assign(endClipVelocity, dir),
-              vec3_dot(dir, endVelocity),
+                Object.assign(endClipVelocity, dir),
+                vec3_dot(dir, endVelocity),
             );
           }
 
@@ -355,7 +355,7 @@ var player_slideMove = (() => {
   };
 })();
 
-var player_checkJump = player => {
+var player_checkJump = (player) => {
   if (player.command.y < 10) {
     // not holding jump
     return false;
@@ -380,7 +380,7 @@ var player_walkMove = (() => {
   var wishvel = vec3_create();
   var wishdir = vec3_create();
 
-  return player => {
+  return (player) => {
     if (player_checkJump(player)) {
       player_airMove(player);
       return;
@@ -399,21 +399,21 @@ var player_walkMove = (() => {
 
     // project the forward and right directions onto the ground plane
     vec3_addScaledVector(
-      vec3_addScaledVector(
-        vec3_setScalar(wishvel, 0),
-        vec3_normalize(
-          pm_clipVelocity(
-            player.viewForward,
-            player_groundTrace_normal,
-            OVERCLIP,
-          ),
+        vec3_addScaledVector(
+            vec3_setScalar(wishvel, 0),
+            vec3_normalize(
+                pm_clipVelocity(
+                    player.viewForward,
+                    player_groundTrace_normal,
+                    OVERCLIP,
+                ),
+            ),
+            fmove,
         ),
-        fmove,
-      ),
-      vec3_normalize(
-        pm_clipVelocity(player.viewRight, player_groundTrace_normal, OVERCLIP),
-      ),
-      smove,
+        vec3_normalize(
+            pm_clipVelocity(player.viewRight, player_groundTrace_normal, OVERCLIP),
+        ),
+        smove,
     );
 
     var wishspeed = vec3_length(Object.assign(wishdir, wishvel));
@@ -438,7 +438,7 @@ var player_airMove = (() => {
   var wishvel = vec3_create();
   var wishdir = vec3_create();
 
-  return player => {
+  return (player) => {
     player_friction(player);
 
     var fmove = player.command.z;
@@ -451,13 +451,13 @@ var player_airMove = (() => {
     player.viewRight.y = 0;
 
     vec3_addScaledVector(
-      vec3_addScaledVector(
-        vec3_setScalar(wishvel, 0),
-        vec3_normalize(player.viewForward),
-        fmove,
-      ),
-      vec3_normalize(player.viewRight),
-      smove,
+        vec3_addScaledVector(
+            vec3_setScalar(wishvel, 0),
+            vec3_normalize(player.viewForward),
+            fmove,
+        ),
+        vec3_normalize(player.viewRight),
+        smove,
     );
     wishvel.y = 0;
 
@@ -474,9 +474,9 @@ var player_airMove = (() => {
     // slide along the steep plane
     if (player.walking) {
       pm_clipVelocity(
-        player.body.velocity,
-        player_groundTrace_normal,
-        OVERCLIP,
+          player.body.velocity,
+          player_groundTrace_normal,
+          OVERCLIP,
       );
     }
 
@@ -487,7 +487,7 @@ var player_airMove = (() => {
 var player_friction = (() => {
   var vec = vec3_create();
 
-  return player => {
+  return (player) => {
     var vel = player.body.velocity;
 
     Object.assign(vec, vel);
@@ -521,11 +521,11 @@ var player_friction = (() => {
   };
 })();
 
-var player_cmdScale = player => {
+var player_cmdScale = (player) => {
   var max = Math.max(
-    Math.abs(player.command.x),
-    Math.abs(player.command.y),
-    Math.abs(player.command.z),
+      Math.abs(player.command.x),
+      Math.abs(player.command.y),
+      Math.abs(player.command.z),
   );
 
   if (!max) {
@@ -556,7 +556,7 @@ var player_checkGround = (() => {
   var position = vec3_create();
   var trace = trace_create();
 
-  return player => {
+  return (player) => {
     Object.assign(position, player.object.position);
     position.y -= 0.25;
 

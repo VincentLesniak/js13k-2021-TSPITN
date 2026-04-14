@@ -12,8 +12,8 @@ import {
   entity_filter,
   entity_find,
 } from './entity.js';
-import { trigger } from './events.js';
-import { object3d_traverse } from './object3d.js';
+import {trigger} from './events.js';
+import {object3d_traverse} from './object3d.js';
 import {
   OVERCLIP,
   pm_clipVelocity,
@@ -42,23 +42,23 @@ export var physics_create = (entity, physics) => {
     collide() {},
   };
   return component_create(
-    dt => vec3_addScaledVector(entity.position, component.velocity, dt),
-    component,
+      (dt) => vec3_addScaledVector(entity.position, component.velocity, dt),
+      component,
   );
 };
 
 export var physics_add = (entity, physics) =>
   entity_add(entity, physics_create(entity, physics));
 
-export var get_physics_component = entity =>
+export var get_physics_component = (entity) =>
   entity_find(entity, is_physics_component);
 
-export var is_physics_component = object => object.physics;
+export var is_physics_component = (object) => object.physics;
 
-export var physics_bodies = object => {
+export var physics_bodies = (object) => {
   var bodies = [];
 
-  object3d_traverse(object, node => {
+  object3d_traverse(object, (node) => {
     bodies.push(...entity_filter(node, is_physics_component));
   });
 
@@ -237,7 +237,7 @@ export var physics_update = (() => {
   var boxA = box3_create();
   var boxB = box3_create();
 
-  return bodies => {
+  return (bodies) => {
     for (var i = 0; i < bodies.length; i++) {
       var bodyA = bodies[i];
 
@@ -269,8 +269,8 @@ export var physics_update = (() => {
 
           if (
             box3_containsPoint(
-              physics_setBoxFromBody(box, body),
-              bullet.parent.position,
+                physics_setBoxFromBody(box, body),
+                bullet.parent.position,
             )
           ) {
             if (bullet.collide(body.parent) === false) {
@@ -282,8 +282,8 @@ export var physics_update = (() => {
         // Two dynamic bodies, or one static and one dynamic body.
         if (
           box3_overlapsBox(
-            physics_setBoxFromBody(boxA, bodyA),
-            physics_setBoxFromBody(boxB, bodyB),
+              physics_setBoxFromBody(boxA, bodyA),
+              physics_setBoxFromBody(boxB, bodyB),
           )
         ) {
           // Handle case when bullet box overlaps, but not the point.
