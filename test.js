@@ -1,12 +1,12 @@
-import { randFloatSpread, mapLinear, lerp } from './src/math.js';
+import {randFloatSpread, mapLinear, lerp} from './src/math.js';
 
-let erreurs = 0;
-let test1 = randFloatSpread(1);
-let test2 = randFloatSpread(1);
-let test3 = mapLinear(1, 2, 3, 4, 5);
-let test4 = mapLinear(1, 20, 3, 40, 5);
-let test5 = lerp(1, 3, 20);
-let test6 = lerp(1.3, -7, 2);
+const erreurs = 0;
+const test1 = randFloatSpread(1);
+const test2 = randFloatSpread(1);
+const test3 = mapLinear(1, 2, 3, 4, 5);
+const test4 = mapLinear(1, 20, 3, 40, 5);
+const test5 = lerp(1, 3, 20);
+const test6 = lerp(1.3, -7, 2);
 
 
 if (!(test1 <= 1)) {
