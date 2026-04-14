@@ -1,13 +1,13 @@
-import {geom_create, geom_push} from './geom.js';
+import { geom_create, geom_push } from './geom.js';
 
 export var boxGeom_create = (width, height, depth) => {
-  const halfWidth = width / 2;
-  const halfHeight = height / 2;
-  const halfDepth = depth / 2;
+  var halfWidth = width / 2;
+  var halfHeight = height / 2;
+  var halfDepth = depth / 2;
 
   // Generated from new THREE.BoxGeometry(1, 1, 1).
   // prettier-ignore
-  const vertices = [
+  var vertices = [
     // px.
     halfWidth, halfHeight, halfDepth,
     halfWidth, halfHeight, -halfDepth,
@@ -22,7 +22,7 @@ export var boxGeom_create = (width, height, depth) => {
   ];
 
   // prettier-ignore
-  const faces = [
+  var faces = [
     0, 2, 1,
     2, 3, 1,
     4, 6, 5,

@@ -12,8 +12,8 @@ import {
   entity_filter,
   entity_find,
 } from './entity.js';
-import {trigger} from './events.js';
-import {object3d_traverse} from './object3d.js';
+import { trigger } from './events.js';
+import { object3d_traverse } from './object3d.js';
 import {
   OVERCLIP,
   pm_clipVelocity,
@@ -35,72 +35,72 @@ export var BODY_DYNAMIC = 2;
 export var BODY_BULLET = 4;
 
 export var physics_create = (entity, physics) => {
-  const component = {
+  var component = {
     physics,
     boundingBox: box3_setFromObject(box3_create(), entity),
     velocity: vec3_create(),
     collide() {},
   };
   return component_create(
-      (dt) => vec3_addScaledVector(entity.position, component.velocity, dt),
-      component,
+    dt => vec3_addScaledVector(entity.position, component.velocity, dt),
+    component,
   );
 };
 
 export var physics_add = (entity, physics) =>
   entity_add(entity, physics_create(entity, physics));
 
-export var get_physics_component = (entity) =>
+export var get_physics_component = entity =>
   entity_find(entity, is_physics_component);
 
-export var is_physics_component = (object) => object.physics;
+export var is_physics_component = object => object.physics;
 
-export var physics_bodies = (object) => {
-  const bodies = [];
+export var physics_bodies = object => {
+  var bodies = [];
 
-  object3d_traverse(object, (node) => {
+  object3d_traverse(object, node => {
     bodies.push(...entity_filter(node, is_physics_component));
   });
 
   return bodies;
 };
 
-const narrowPhase = (() => {
-  const penetration = vec3_create();
+var narrowPhase = (() => {
+  var penetration = vec3_create();
 
   return (bodyA, bodyB, boxA, boxB) => {
     // Determine overlap.
     // d0 is negative side or 'left' side.
     // d1 is positive or 'right' side.
-    const d0x = boxB.max.x - boxA.min.x;
-    const d1x = boxA.max.x - boxB.min.x;
+    var d0x = boxB.max.x - boxA.min.x;
+    var d1x = boxA.max.x - boxB.min.x;
 
-    const d0y = boxB.max.y - boxA.min.y;
-    const d1y = boxA.max.y - boxB.min.y;
+    var d0y = boxB.max.y - boxA.min.y;
+    var d1y = boxA.max.y - boxB.min.y;
 
-    const d0z = boxB.max.z - boxA.min.z;
-    const d1z = boxA.max.z - boxB.min.z;
+    var d0z = boxB.max.z - boxA.min.z;
+    var d1z = boxA.max.z - boxB.min.z;
 
     // Only overlapping on an axis if both ranges intersect.
-    let dx = 0;
+    var dx = 0;
     if (d0x > 0 && d1x > 0) {
       dx = d0x < d1x ? d0x : -d1x;
     }
 
-    let dy = 0;
+    var dy = 0;
     if (d0y > 0 && d1y > 0) {
       dy = d0y < d1y ? d0y : -d1y;
     }
 
-    let dz = 0;
+    var dz = 0;
     if (d0z > 0 && d1z > 0) {
       dz = d0z < d1z ? d0z : -d1z;
     }
 
     // Determine minimum axis of separation.
-    const adx = Math.abs(dx);
-    const ady = Math.abs(dy);
-    const adz = Math.abs(dz);
+    var adx = Math.abs(dx);
+    var ady = Math.abs(dy);
+    var adz = Math.abs(dz);
 
     if (adx < ady && adx < adz) {
       vec3_set(penetration, dx, 0, 0);
@@ -110,8 +110,8 @@ const narrowPhase = (() => {
       vec3_set(penetration, 0, 0, dz);
     }
 
-    const objectA = bodyA.parent;
-    const objectB = bodyB.parent;
+    var objectA = bodyA.parent;
+    var objectB = bodyB.parent;
 
     if (bodyA.physics === BODY_STATIC) {
       vec3_addScaledVector(objectB.position, penetration, -OVERCLIP);
@@ -132,8 +132,8 @@ const narrowPhase = (() => {
 })();
 
 export var sweptAABB = (() => {
-  const time = vec3_create();
-  const velocity = vec3_create();
+  var time = vec3_create();
+  var velocity = vec3_create();
 
   return (trace, bodyA, bodyB, boxA, boxB) => {
     if (box3_overlapsBox(boxA, boxB)) {
@@ -145,23 +145,23 @@ export var sweptAABB = (() => {
     vec3_setScalar(time, Infinity);
     vec3_subVectors(velocity, bodyB.velocity, bodyA.velocity);
 
-    const vx = velocity.x;
-    const vy = velocity.y;
-    const vz = velocity.z;
+    var vx = velocity.x;
+    var vy = velocity.y;
+    var vz = velocity.z;
 
     // d0 is negative side or 'left' side.
     // d1 is positive or 'right' side.
-    const d0x = boxB.max.x - boxA.min.x;
-    const d1x = boxA.max.x - boxB.min.x;
+    var d0x = boxB.max.x - boxA.min.x;
+    var d1x = boxA.max.x - boxB.min.x;
 
-    const d0y = boxB.max.y - boxA.min.y;
-    const d1y = boxA.max.y - boxB.min.y;
+    var d0y = boxB.max.y - boxA.min.y;
+    var d1y = boxA.max.y - boxB.min.y;
 
-    const d0z = boxB.max.z - boxA.min.z;
-    const d1z = boxA.max.z - boxB.min.z;
+    var d0z = boxB.max.z - boxA.min.z;
+    var d1z = boxA.max.z - boxB.min.z;
 
-    let t0 = 0;
-    let t1 = Infinity;
+    var t0 = 0;
+    var t1 = Infinity;
 
     if (vx < 0) {
       if (d0x < 0) return;
@@ -229,20 +229,20 @@ export var sweptAABB = (() => {
   };
 })();
 
-const physics_setBoxFromBody = (box, body) =>
+var physics_setBoxFromBody = (box, body) =>
   box3_translate(box3_copy(box, body.boundingBox), body.parent.position);
 
 export var physics_update = (() => {
-  const box = box3_create();
-  const boxA = box3_create();
-  const boxB = box3_create();
+  var box = box3_create();
+  var boxA = box3_create();
+  var boxB = box3_create();
 
-  return (bodies) => {
-    for (let i = 0; i < bodies.length; i++) {
-      const bodyA = bodies[i];
+  return bodies => {
+    for (var i = 0; i < bodies.length; i++) {
+      var bodyA = bodies[i];
 
-      for (let j = i + 1; j < bodies.length; j++) {
-        const bodyB = bodies[j];
+      for (var j = i + 1; j < bodies.length; j++) {
+        var bodyB = bodies[j];
 
         // Immovable objects.
         if (bodyA.physics === BODY_STATIC && bodyB.physics === BODY_STATIC) {
@@ -269,8 +269,8 @@ export var physics_update = (() => {
 
           if (
             box3_containsPoint(
-                physics_setBoxFromBody(box, body),
-                bullet.parent.position,
+              physics_setBoxFromBody(box, body),
+              bullet.parent.position,
             )
           ) {
             if (bullet.collide(body.parent) === false) {
@@ -282,8 +282,8 @@ export var physics_update = (() => {
         // Two dynamic bodies, or one static and one dynamic body.
         if (
           box3_overlapsBox(
-              physics_setBoxFromBody(boxA, bodyA),
-              physics_setBoxFromBody(boxB, bodyB),
+            physics_setBoxFromBody(boxA, bodyA),
+            physics_setBoxFromBody(boxB, bodyB),
           )
         ) {
           // Handle case when bullet box overlaps, but not the point.
