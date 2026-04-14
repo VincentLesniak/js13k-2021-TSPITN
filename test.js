@@ -1,6 +1,6 @@
 import {randFloatSpread, mapLinear, lerp} from './src/math.js';
 
-const erreurs = 0;
+let erreurs = 0;
 const test1 = randFloatSpread(1);
 const test2 = randFloatSpread(1);
 const test3 = mapLinear(1, 2, 3, 4, 5);
