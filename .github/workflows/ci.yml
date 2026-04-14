@@ -74,3 +74,8 @@ jobs:
         run: npm install
       - name: Lancement des tests unitaires
         run: npm run test
+      - name: Génération du résumé
+        if: always()
+        run: |
+          echo "## Tests" >> $GITHUB_STEP_SUMMARY
+          echo "Tests terminés" >> $GITHUB_STEP_SUMMARY
