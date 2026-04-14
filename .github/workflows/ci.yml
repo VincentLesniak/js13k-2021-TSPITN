@@ -74,8 +74,13 @@ jobs:
         run: npm install
       - name: Lancement des tests unitaires
         run: npm run test
-      - name: Génération du résumé
-        if: always()
-        run: |
-          echo "## Tests" >> $GITHUB_STEP_SUMMARY
-          echo "Tests terminés" >> $GITHUB_STEP_SUMMARY
+
+  job-summary:
+    needs: [job-test, job-lint, job-audit]
+    if: always()
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Génération du titre
+        run: echo "## Tests" >> $GITHUB_STEP_SUMMARY
+      - name: Ajout du contenu
+        run: echo "Tests terminés" >> $GITHUB_STEP_SUMMARY
