@@ -16,9 +16,9 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Récupération du code
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+        uses: actions/checkout@v6
       - name: Configuration de Node.js
-        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f
+        uses: actions/setup-node@v6
         with:
           node-version: '20'
           cache: 'npm' # Active la mise en cache ici
@@ -30,9 +30,9 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Récupération du code
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+        uses: actions/checkout@v6
       - name: Configuration de Node.js
-        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f
+        uses: actions/setup-node@v6
         with:
           node-version: '20'
           cache: 'npm' # Récupère le cache créé par job-build
@@ -40,17 +40,16 @@ jobs:
         # Cette étape sera quasi-instantanée grâce au cache
         run: npm install
       - name: Audit des dépendances
-        run: npm audit --audit-level=critical
-        continue-on-error: true
+        run: npm audit
 
   job-lint:
     needs: job-build
     runs-on: ubuntu-22.04
     steps:
       - name: Récupération du code
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+        uses: actions/checkout@v6
       - name: Configuration de Node.js
-        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f
+        uses: actions/setup-node@v6
         with:
           node-version: '20'
           cache: 'npm'
@@ -64,9 +63,9 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Récupération du code
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+        uses: actions/checkout@v6
       - name: Configuration de Node.js
-        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f
+        uses: actions/setup-node@v6
         with:
           node-version: '20'
           cache: 'npm'
@@ -81,6 +80,4 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Génération du titre
-        run: echo "## Tests" >> $GITHUB_STEP_SUMMARY
-      - name: Ajout du contenu
-        run: echo "Tests terminés" >> $GITHUB_STEP_SUMMARY
+        run: echo "## Les tests sont terminés" >> $GITHUB_STEP_SUMMARY
