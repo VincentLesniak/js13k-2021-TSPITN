@@ -411,7 +411,8 @@ var player_walkMove = (() => {
             fmove,
         ),
         vec3_normalize(
-            pm_clipVelocity(player.viewRight, player_groundTrace_normal, OVERCLIP),
+            pm_clipVelocity(player.viewRight,
+                player_groundTrace_normal, OVERCLIP),
         ),
         smove,
     );

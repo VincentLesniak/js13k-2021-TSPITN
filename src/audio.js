@@ -185,3 +185,5 @@ export var playEnemyDeath = () => play(enemyDeath[15]);
 
 
 addEventListener('click', () => audioContext.resume(), {once: true});
+
+export {sin, tri, add, scale, slide};

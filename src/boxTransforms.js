@@ -126,7 +126,8 @@ export var extrude = (() => {
       var indexB = indicesB[index];
       Object.assign(
           extrudedGeom.vertices[
-          indicesB === px || indicesB === nx ? // Transform px [0, 1, 2, 3] to nx [5, 4, 7, 6] and nx to px.
+          indicesB === px || indicesB === nx ?
+          // Transform px [0, 1, 2, 3] to nx [5, 4, 7, 6] and nx to px.
               indexB ^ 1 :
             indexB
           ],

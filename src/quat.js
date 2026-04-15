@@ -22,7 +22,8 @@ export var quat_setFromEuler = (q, euler) => {
   var {x, y, z} = euler;
 
   // http://www.mathworks.com/matlabcentral/fileexchange/
-  //   20696-function-to-convert-between-dcm-euler-angles-quaternions-and-euler-vectors/
+  //   20696-function-to-convert-between-dcm
+  // -euler-angles-quaternions-and-euler-vectors/
   //  content/SpinCalc.m
 
   var c1 = Math.cos(x / 2);

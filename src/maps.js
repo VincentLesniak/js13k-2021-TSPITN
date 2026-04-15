@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {findTarget, getRange, RANGE_MELEE} from './ai.js';
 import {playEnemyDeath, playShoot} from './audio.js';
 import {boxGeom_create} from './boxGeom.js';
@@ -220,7 +221,8 @@ export var map0 = (gl, scene, camera) => {
     // [[0, 52, -240], [192, 52, -240], 64, 8]
   ].map(([start, end, width, height]) =>
     createStaticMeshFromGeometry(
-        bridge_create(vec3_create(...start), vec3_create(...end), width, height),
+        bridge_create(vec3_create(...start), vec3_create(...end),
+            width, height),
     ),
   );
 
@@ -239,7 +241,8 @@ export var map0 = (gl, scene, camera) => {
   starfieldMaterial.fog = false;
   object3d_add(
       cameraObject,
-      mesh_create(starfield_create(15360, 512), starfieldMaterial),
+      mesh_create(starfield_create(15360, 512),
+          starfieldMaterial),
   );
 
   var dreadnoughtMaterial = material_create();
@@ -740,7 +743,8 @@ export var map0 = (gl, scene, camera) => {
             camera.quaternion,
         );
         vec3_normalize(
-            vec3_cross(vec3_set(player.viewRight, 0, -1, 0), player.viewForward),
+            vec3_cross(vec3_set(player.viewRight, 0, -1, 0),
+                player.viewForward),
         );
 
         player_update(player);
@@ -764,7 +768,8 @@ export var map0 = (gl, scene, camera) => {
           vec3_set(bulletMaterial.emissive, 0.5, 0.5, 2);
 
           var bullet = removeAfter_create(
-              physics_add(mesh_create(bulletGeometry, bulletMaterial), BODY_BULLET),
+              physics_add(mesh_create(bulletGeometry, bulletMaterial),
+                  BODY_BULLET),
               4,
           );
           bullet.castShadow = true;
@@ -779,7 +784,8 @@ export var map0 = (gl, scene, camera) => {
                       randFloatSpread(1),
                       randFloatSpread(1),
                   ),
-                  vec3_applyQuaternion(Object.assign(_v1, vec3_Z), camera.quaternion),
+                  vec3_applyQuaternion(Object.assign(_v1, vec3_Z),
+                      camera.quaternion),
                   -16,
               ),
           );
@@ -788,13 +794,15 @@ export var map0 = (gl, scene, camera) => {
           vec3_addScaledVector(
               bulletPhysics.velocity,
               // Object.assign(bulletPhysics.velocity, playerPhysics.velocity),
-              vec3_applyQuaternion(Object.assign(_v0, vec3_Z), bullet.quaternion),
+              vec3_applyQuaternion(Object.assign(_v0, vec3_Z),
+                  bullet.quaternion),
               800,
           );
 
           vec3_add(
               vec3_applyQuaternion(
-                  vec3_set(bullet.position, playerWidth / 4, -playerHeight / 8, 0),
+                  vec3_set(bullet.position, playerWidth / 4,
+                      -playerHeight / 8, 0),
                   camera.quaternion,
               ),
               playerMesh.position,
