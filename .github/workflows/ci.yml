@@ -19,7 +19,7 @@ jobs:
       - name: Configuration de Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm' # Active la mise en cache ici
       - name: Installation des dépendances
         run: npm install
@@ -33,7 +33,7 @@ jobs:
       - name: Configuration de Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm' # Récupère le cache créé par job-build
       - name: Installation des dépendances
         # Cette étape sera quasi-instantanée grâce au cache
@@ -50,7 +50,7 @@ jobs:
       - name: Configuration de Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
       - name: Installation des dépendances
         run: npm install
@@ -66,7 +66,7 @@ jobs:
       - name: Configuration de Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
       - name: Installation des dépendances
         run: npm install
@@ -83,7 +83,7 @@ jobs:
       - name: Configuration de Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
 
       - name: Installation des dépendances
