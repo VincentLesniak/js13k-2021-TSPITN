@@ -18,9 +18,9 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Récupération du code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Configuration de Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: '24'
           cache: 'npm' # Active la mise en cache ici
@@ -32,9 +32,9 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Récupération du code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Configuration de Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: '24'
           cache: 'npm' # Récupère le cache créé par job-build
@@ -49,9 +49,9 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Récupération du code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Configuration de Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: '24'
           cache: 'npm'
@@ -65,9 +65,9 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Récupération du code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Configuration de Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: '24'
           cache: 'npm'
@@ -81,10 +81,10 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Récupération du code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Configuration de Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: '24'
           cache: 'npm'
@@ -97,7 +97,7 @@ jobs:
 
       - name: Capture d'écran
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: erreur-cypress
           # indique ou recuperer la capture
@@ -111,7 +111,7 @@ jobs:
         - name: Téléchargement de la capture
           #vérifie strictement si le travail de test a un statut d'échec
           if: needs.job-test-fonctionnel.result == 'failure'
-          uses: actions/download-artifact@v4
+          uses: actions/download-artifact@v5
           with:
             name: erreur-cypress
             path: image-recuperee
