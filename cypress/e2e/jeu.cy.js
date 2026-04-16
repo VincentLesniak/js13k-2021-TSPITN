@@ -28,9 +28,8 @@ describe('tests basiques du jeu', () => {
 
   //définit la vérification impossible
 
-//   it('echoue en cherchant un fantome', () => {
-//     //cherche une classe css totalement imaginaire
-//     cy.get('.licorne-magique').should('exist')
-//   })
+  it('echoue en cherchant un fantome', () => {
+    cy.get('.licorne-magique').should('exist')
+  })
 
 })
