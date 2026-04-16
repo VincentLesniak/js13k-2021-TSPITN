@@ -92,12 +92,6 @@ jobs:
       - name: Lancement des tests e2e
         run: npx cypress run
 
-      - name: Affichage du succès
-        if: success()
-        run: |
-          echo "### Tests fonctionnels : Succès" >> $GITHUB_STEP_SUMMARY
-          echo "Tous les tests fonctionnels du jeu sont validés." >> $GITHUB_STEP_SUMMARY
-
       - name: Capture d'écran
         if: failure()
         uses: actions/upload-artifact@v4
@@ -105,6 +99,11 @@ jobs:
           name: erreur-cypress
           # indique ou recuperer la capture
           path: cypress/screenshots/
+          run:
+            echo "### Console Cypress" >> $GITHUB_STEP_SUMMARY
+            echo '```text' >> $GITHUB_STEP_SUMMARY
+            cat cypress.log >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
 
   job-summary:
       needs: [job-test, job-lint, job-audit, job-test-fonctionnel]
@@ -127,7 +126,6 @@ jobs:
             echo "- Tests Fonctionnels : ${{ needs.job-test-fonctionnel.result }}" >> $GITHUB_STEP_SUMMARY
           
             if [ -d "image-recuperee" ]; then
-              echo "### Erreur de test fonctionnel" >> $GITHUB_STEP_SUMMARY
-              IMAGE=$(base64 -w 0 image-recuperee/*/*.png | head -n 1)
-              echo "<img src=\"data:image/png;base64,$IMAGE\" width=\"600\">" >> $GITHUB_STEP_SUMMARY
+              echo "### Erreur visuelle détectée" >> $GITHUB_STEP_SUMMARY
+              echo "Un test fonctionnel a échoué. Télécharge l'archive **erreur-cypress** dans la section *Artifacts* pour visionner la capture d'écran." >> $GITHUB_STEP_SUMMARY
             fi
