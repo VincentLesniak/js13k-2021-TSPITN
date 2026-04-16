@@ -99,7 +99,10 @@ jobs:
           name: erreur-cypress
           # indique ou recuperer la capture
           path: cypress/screenshots/
-        run:
+
+      - name: Affichage des logs
+        if: failure()
+        run: |
           echo "### Console Cypress" >> $GITHUB_STEP_SUMMARY
           echo '```text' >> $GITHUB_STEP_SUMMARY
           cat cypress.log >> $GITHUB_STEP_SUMMARY
