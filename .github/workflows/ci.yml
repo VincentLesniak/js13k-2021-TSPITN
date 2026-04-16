@@ -92,9 +92,6 @@ jobs:
       - name: Lancement des tests e2e
         run: npx cypress run
 
-      - name: Lancement des tests e2e
-        run: NO_COLOR=1 npx cypress run 2>&1 | tee cypress.log
-
       - name: Capture d'écran
         if: failure()
         uses: actions/upload-artifact@v4
@@ -102,14 +99,6 @@ jobs:
           name: erreur-cypress
           # indique ou recuperer la capture
           path: cypress/screenshots/
-
-      - name: Affichage des logs
-        if: failure()
-        run: |
-          echo "### Console Cypress" >> $GITHUB_STEP_SUMMARY
-          echo '```text' >> $GITHUB_STEP_SUMMARY
-          cat cypress.log >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
 
   job-summary:
       needs: [job-test, job-lint, job-audit, job-test-fonctionnel]
