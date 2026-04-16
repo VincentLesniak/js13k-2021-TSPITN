@@ -11,7 +11,6 @@ permissions:
   contents: read
 
 jobs:
-
   job-build:
     runs-on: ubuntu-22.04
     steps:
@@ -74,14 +73,61 @@ jobs:
       - name: Lancement des tests unitaires
         run: npm run test
 
-  job-summary:
-    needs: [job-test, job-lint, job-audit]
-    if: always()
+  job-test-fonctionnel:
+    needs: job-build
     runs-on: ubuntu-22.04
     steps:
-      - name: Génération du résumé
+      - name: Récupération du code
+        uses: actions/checkout@v4
+
+      - name: Configuration de Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Installation des dépendances
+        run: npm install
+
+      - name: Lancement des tests e2e
+        run: npx cypress run
+
+      - name: Affichage du succès
+        if: success()
         run: |
-          echo "## Bilan de l'exécution" >> $GITHUB_STEP_SUMMARY
-          echo "- Audit : ${{ needs.job-audit.result }}" >> $GITHUB_STEP_SUMMARY
-          echo "- Linter : ${{ needs.job-lint.result }}" >> $GITHUB_STEP_SUMMARY
-          echo "- Tests : ${{ needs.job-test.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "### Tests fonctionnels : Succès" >> $GITHUB_STEP_SUMMARY
+          echo "Tous les tests fonctionnels du jeu sont validés." >> $GITHUB_STEP_SUMMARY
+
+      - name: Capture d'écran
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: erreur-cypress
+          # indique ou recuperer la capture
+          path: cypress/screenshots/
+
+  job-summary:
+      needs: [job-test, job-lint, job-audit, job-test-fonctionnel]
+      if: always()
+      runs-on: ubuntu-22.04
+      steps:
+        - name: Téléchargement de la capture
+          uses: actions/download-artifact@v4
+          with:
+            name: erreur-cypress
+            path: image-recuperee
+          continue-on-error: true
+
+        - name: Génération du résumé global
+          run: |
+            echo "## Bilan de l'exécution" >> $GITHUB_STEP_SUMMARY
+            echo "- Audit : ${{ needs.job-audit.result }}" >> $GITHUB_STEP_SUMMARY
+            echo "- Linter : ${{ needs.job-lint.result }}" >> $GITHUB_STEP_SUMMARY
+            echo "- Tests Unitaires : ${{ needs.job-test.result }}" >> $GITHUB_STEP_SUMMARY
+            echo "- Tests Fonctionnels : ${{ needs.job-test-fonctionnel.result }}" >> $GITHUB_STEP_SUMMARY
+          
+            if [ -d "image-recuperee" ]; then
+              echo "### Erreur de test fonctionnel" >> $GITHUB_STEP_SUMMARY
+              IMAGE=$(base64 -w 0 image-recuperee/*/*.png | head -n 1)
+              echo "<img src=\"data:image/png;base64,$IMAGE\" width=\"600\">" >> $GITHUB_STEP_SUMMARY
+            fi
