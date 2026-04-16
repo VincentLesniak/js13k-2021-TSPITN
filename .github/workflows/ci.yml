@@ -99,11 +99,11 @@ jobs:
           name: erreur-cypress
           # indique ou recuperer la capture
           path: cypress/screenshots/
-          run:
-            echo "### Console Cypress" >> $GITHUB_STEP_SUMMARY
-            echo '```text' >> $GITHUB_STEP_SUMMARY
-            cat cypress.log >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
+        run:
+          echo "### Console Cypress" >> $GITHUB_STEP_SUMMARY
+          echo '```text' >> $GITHUB_STEP_SUMMARY
+          cat cypress.log >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
 
   job-summary:
       needs: [job-test, job-lint, job-audit, job-test-fonctionnel]
