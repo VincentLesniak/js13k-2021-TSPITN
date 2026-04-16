@@ -7,6 +7,9 @@ on:
     branches:
       - main
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 permissions:
   contents: read
 
@@ -106,11 +109,12 @@ jobs:
       runs-on: ubuntu-22.04
       steps:
         - name: Téléchargement de la capture
+          #vérifie strictement si le travail de test a un statut d'échec
+          if: needs.job-test-fonctionnel.result == 'failure'
           uses: actions/download-artifact@v4
           with:
             name: erreur-cypress
             path: image-recuperee
-          continue-on-error: true
 
         - name: Génération du résumé global
           run: |
